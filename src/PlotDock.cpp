@@ -424,7 +424,7 @@ void PlotDock::updatePlot(SqliteTableModel* model, BrowseDataTableSettings* sett
     ui->plotWidget->replot();
 
     // Warn user if not all data has been fetched and hint about the button for loading all the data
-    if (model->rowCountAvailable() != SqliteTableModel::RowCount::Complete || !model->isCacheComplete()) {
+    if (model && (model->rowCountAvailable() != SqliteTableModel::RowCount::Complete || !model->isCacheComplete())) {
         ui->buttonLoadAllData->setEnabled(true);
         ui->buttonLoadAllData->setStyleSheet("QToolButton {color: white; background-color: rgb(255, 102, 102)}");
         ui->buttonLoadAllData->setToolTip(tr("Load all data and redraw plot.\n"
