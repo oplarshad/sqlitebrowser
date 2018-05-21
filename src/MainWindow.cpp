@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
@@ -1146,7 +1144,7 @@ void MainWindow::executeQuery()
         // Execute next statement
         int tail_length_before = tail_length;
         const char* qbegin = tail;
-        auto pDb = db.get("executing query");
+        auto pDb = db.get(tr("executing query"));
         sql3status = sqlite3_prepare_v2(pDb.get(), tail, tail_length, &vm, &tail);
         QString queryPart = QString::fromUtf8(qbegin, tail - qbegin);
         tail_length -= (tail - qbegin);
@@ -2919,7 +2917,7 @@ void MainWindow::requestCollation(const QString& name, int eTextRep)
                    "If you choose to proceed, be aware bad things can happen to your database.\n"
                    "Create a backup!").arg(name), QMessageBox::Yes | QMessageBox::No);
     if(reply == QMessageBox::Yes) {
-        auto pDb = db.get("creating collation");
+        auto pDb = db.get(tr("creating collation"));
         sqlite3_create_collation(pDb.get(), name.toUtf8(), eTextRep, nullptr, collCompare);
     }
 }

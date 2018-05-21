@@ -525,8 +525,8 @@ std::unique_lock<std::mutex> DBBrowserDB::waitForDbRelease()
         lk.unlock();
 
         QMessageBox msgBox;
-        msgBox.setText("The database is currently busy: " + str);
-        msgBox.setInformativeText("Do you want to abort that other operation?");
+        msgBox.setText(tr("The database is currently busy: ") + str);
+        msgBox.setInformativeText(tr("Do you want to abort that other operation?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         int ret = msgBox.exec();

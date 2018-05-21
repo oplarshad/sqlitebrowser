@@ -1,4 +1,3 @@
-
 #include "sqlitetablemodel.h"
 #include "sqlitedb.h"
 #include "sqlite.h"
@@ -24,7 +23,7 @@ SqliteTableModel::SqliteTableModel(DBBrowserDB& db, QObject* parent, size_t chun
     , m_encoding(encoding)
 {
     worker = new RowLoader(
-        [this](){ return m_db.get("reading rows"); },
+        [this](){ return m_db.get(tr("reading rows")); },
         [this](QString stmt){ return m_db.logSQL(stmt, kLogMsg_App); },
         m_headers, m_mutexDataCache, m_cache
         );
@@ -95,8 +94,6 @@ void SqliteTableModel::handleRowCountComplete (int life_id, int num_rows)
 
 void SqliteTableModel::reset()
 {
-    //std::cout << "\n\nSqliteTableModel::reset()\n";
-
     clearCache();
 
     m_sTable.clear();
@@ -260,7 +257,7 @@ QVariant SqliteTableModel::data(const QModelIndex &index, int role) const
     if(role == Qt::DisplayRole || role == Qt::EditRole)
     {
         if(!row_available)
-            return decode("loading...");
+            return tr("loading...");
         if(role == Qt::DisplayRole && cached_row->at(index.column()).isNull())
         {
             return Settings::getValue("databrowser", "null_text").toString();
@@ -503,7 +500,6 @@ bool SqliteTableModel::insertRows(int row, int count, const QModelIndex& parent)
     beginInsertRows(parent, row, row + count - 1);
     for(unsigned int i = 0; i < tempList.size(); ++i)
     {
-        //std::cout << "inserting at " << i + row << std::endl;
         m_cache.insert(i + row, std::move(tempList.at(i)));
         m_currentRowCount++;
     }
@@ -695,7 +691,7 @@ void SqliteTableModel::removeCommentsFromQuery(QString& query)
 QStringList SqliteTableModel::getColumns(std::shared_ptr<sqlite3> pDb, const QString& sQuery, QVector<int>& fieldsTypes)
 {
     if(!pDb)
-        pDb = m_db.get("retrieving list of columns");
+        pDb = m_db.get(tr("retrieving list of columns"));
 
     sqlite3_stmt* stmt;
     QByteArray utf8Query = sQuery.toUtf8();
@@ -949,11 +945,8 @@ void SqliteTableModel::triggerCacheLoad (int row) const
     QMutexLocker lk(&m_mutexDataCache);
     m_cache.smallestNonAvailableRange(row_begin, row_end);
 
-    if(row_end != row_begin) {
+    if(row_end != row_begin)
         worker->triggerFetch(m_lifeCounter, row_begin, row_end);
-    } else {
-        //std::cout << "entire range already loaded\n";
-    }
 }
 
 void SqliteTableModel::triggerCacheLoad (int row_begin, int row_end) const
