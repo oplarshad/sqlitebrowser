@@ -129,7 +129,20 @@ add_dependencies(test-regex qscintilla2)
 target_link_libraries(test-regex qscintilla2 pthread)
 add_test(test-regex test-regex)
 
+# test cache
 
-add_executable(test-cache test_row_cache.cpp)
-target_link_libraries(test-cache gtest_main)
-add_test(NAME test-cache COMMAND test-cache)
+set(TESTCACHE_SRC
+    TestRowCache.cpp
+)
+
+set(TESTCACHE_MOC_HDR
+    TestRowCache.h
+)
+
+add_executable(test-cache ${TESTCACHE_MOC} ${TESTCACHE_SRC})
+
+qt5_use_modules(test-cache Test Core)
+set(QT_LIBRARIES "")
+
+target_link_libraries(test-cache ${QT_LIBRARIES})
+add_test(test-cache test-cache)

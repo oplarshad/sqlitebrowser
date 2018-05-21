@@ -78,8 +78,6 @@ endif()
 add_subdirectory(${QHEXEDIT_DIR})
 add_subdirectory(${QCUSTOMPLOT_DIR})
 
-add_subdirectory(/home/michael/dev/gtest/git/googletest /home/michael/dev/gtest/build)
-
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
