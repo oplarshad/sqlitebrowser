@@ -497,7 +497,8 @@ bool DBBrowserDB::close()
     emit dbChanged(getDirty());
     emit structureUpdated();
 
-    return true; //< not cancelled
+    // Return true to tell the calling function that the closing wasn't cancelled by the user
+    return true;
 }
 
 DBBrowserDB::db_pointer_type DBBrowserDB::get(QString user)
@@ -1035,9 +1036,8 @@ QString DBBrowserDB::addRecord(const sqlb::ObjectIdentifier& tablename)
     } else {
         if(table->isWithoutRowidTable())
             return pk_value;
-        else {
+        else
             return QString::number(sqlite3_last_insert_rowid(_db));
-        }
     }
 }
 

@@ -246,9 +246,7 @@ QVariant SqliteTableModel::data(const QModelIndex &index, int role) const
     {
         cached_row = &m_cache.at(index.row());
         row_available = true;
-    }
-    else
-    {
+    } else {
         blank_data = makeDefaultCacheEntry();
         cached_row = &blank_data;
         row_available = false;
@@ -261,13 +259,9 @@ QVariant SqliteTableModel::data(const QModelIndex &index, int role) const
         if(role == Qt::DisplayRole && cached_row->at(index.column()).isNull())
         {
             return Settings::getValue("databrowser", "null_text").toString();
-        }
-        else if(role == Qt::DisplayRole && nosync_isBinary(index))
-        {
+        } else if(role == Qt::DisplayRole && nosync_isBinary(index)) {
             return Settings::getValue("databrowser", "blob_text").toString();
-        }
-        else if(role == Qt::DisplayRole)
-        {
+        } else if(role == Qt::DisplayRole) {
             int limit = Settings::getValue("databrowser", "symbol_limit").toInt();
             QByteArray displayText = cached_row->at(index.column());
             if (displayText.length() > limit) {
@@ -279,16 +273,12 @@ QVariant SqliteTableModel::data(const QModelIndex &index, int role) const
         } else {
             return decode(cached_row->at(index.column()));
         }
-    }
-    else if(role == Qt::FontRole)
-    {
+    } else if(role == Qt::FontRole) {
         QFont font;
         if(!row_available || cached_row->at(index.column()).isNull() || nosync_isBinary(index))
             font.setItalic(true);
         return font;
-    }
-    else if(role == Qt::ForegroundRole)
-    {
+    } else if(role == Qt::ForegroundRole) {
         if(!row_available)
             return QColor(100, 100, 100);
         if(cached_row->at(index.column()).isNull())
@@ -296,9 +286,7 @@ QVariant SqliteTableModel::data(const QModelIndex &index, int role) const
         else if (nosync_isBinary(index))
             return QColor(Settings::getValue("databrowser", "bin_fg_colour").toString());
         return QColor(Settings::getValue("databrowser", "reg_fg_colour").toString());
-    }
-    else if (role == Qt::BackgroundRole)
-    {
+    } else if (role == Qt::BackgroundRole) {
         if(!row_available)
             return QColor(255, 200, 200);
         if(cached_row->at(index.column()).isNull())
@@ -306,9 +294,7 @@ QVariant SqliteTableModel::data(const QModelIndex &index, int role) const
         else if (nosync_isBinary(index))
             return QColor(Settings::getValue("databrowser", "bin_bg_colour").toString());
         return QColor(Settings::getValue("databrowser", "reg_bg_colour").toString());
-    }
-    else if(role == Qt::ToolTipRole)
-    {
+    } else if(role == Qt::ToolTipRole) {
         sqlb::ForeignKeyClause fk = getForeignKeyClause(index.column()-1);
         if(fk.isSet())
             return tr("References %1(%2)\nHold Ctrl+Shift and click to jump there").arg(fk.table()).arg(fk.columns().join(","));

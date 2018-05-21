@@ -1,8 +1,6 @@
 #ifndef SQLITETABLEMODEL_H
 #define SQLITETABLEMODEL_H
 
-#include <memory>
-
 #include <QAbstractTableModel>
 #include <QStringList>
 #include <QVector>
@@ -14,7 +12,6 @@
 
 struct sqlite3;
 class DBBrowserDB;
-
 
 class SqliteTableModel : public QAbstractTableModel
 {
