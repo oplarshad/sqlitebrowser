@@ -6,6 +6,7 @@
 #include <QVector>
 #include <QThread>
 #include <QMutex>
+#include <memory>
 
 #include "sqlitetypes.h"
 #include "RowCache.h"
