@@ -429,7 +429,6 @@ void PlotDock::updatePlot(SqliteTableModel* model, BrowseDataTableSettings* sett
         ui->buttonLoadAllData->setStyleSheet("QToolButton {color: white; background-color: rgb(255, 102, 102)}");
         ui->buttonLoadAllData->setToolTip(tr("Load all data and redraw plot.\n"
                                              "Warning: not all data has been fetched from the table yet due to the partial fetch mechanism."));
-        QToolTip::showText(ui->buttonLoadAllData->mapToGlobal(QPoint(0, 0)), ui->buttonLoadAllData->toolTip());
     } else {
         ui->buttonLoadAllData->setEnabled(false);
         ui->buttonLoadAllData->setStyleSheet("");
