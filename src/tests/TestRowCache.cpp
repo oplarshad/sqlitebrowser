@@ -19,7 +19,7 @@ void TestRowCache::construction()
 {
     C c;
 
-    QCOMPARE(c.numSet(), 0u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(0));
 
     QVERIFY(c.count(0) == false);
     QVERIFY(c.count(1) == false);
@@ -38,8 +38,8 @@ void TestRowCache::setGet()
     c.set(6, 60);
     c.set(100, 1000);
 
-    QCOMPARE(c.numSet(), 5u);
-    QCOMPARE(c.numSegments(), 4u); // the '0' set after the '1' position does not merge currently
+    QCOMPARE(c.numSet(), static_cast<size_t>(5));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(4)); // the '0' set after the '1' position does not merge currently
 
     int cnt = 0;
     const C & cc = c;
@@ -61,19 +61,19 @@ void TestRowCache::insert()
     C c;
 
     c.insert(3, 30);
-    QCOMPARE(c.numSet(), 1u);
-    QCOMPARE(c.numSegments(), 1u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(1));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(1));
     QCOMPARE(c.at(3), 30);
 
     c.insert(3, 31);
-    QCOMPARE(c.numSet(), 2u);
-    QCOMPARE(c.numSegments(), 1u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(2));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(1));
     QCOMPARE(c.at(3), 31);
     QCOMPARE(c.at(4), 30);
 
     c.insert(0, 0);
-    QCOMPARE(c.numSet(), 3u);
-    QCOMPARE(c.numSegments(), 2u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(3));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(2));
     QCOMPARE(c.at(0), 0);
     QVERIFY_EXCEPTION_THROWN(c.at(3), std::out_of_range);
     QCOMPARE(c.at(4), 31);
@@ -81,16 +81,16 @@ void TestRowCache::insert()
     QVERIFY_EXCEPTION_THROWN(c.at(6), std::out_of_range);
 
     c.insert(1, 100);
-    QCOMPARE(c.numSet(), 4u);
-    QCOMPARE(c.numSegments(), 2u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(4));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(2));
     QCOMPARE(c.at(0), 0);
     QCOMPARE(c.at(1), 100);
     QCOMPARE(c.at(5), 31);
     QCOMPARE(c.at(6), 30);
 
     c.insert(8, 1);
-    QCOMPARE(c.numSet(), 5u);
-    QCOMPARE(c.numSegments(), 3u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(5));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(3));
     QCOMPARE(c.at(0), 0);
     QCOMPARE(c.at(1), 100);
     QCOMPARE(c.at(5), 31);
@@ -105,8 +105,8 @@ void TestRowCache::erase()
     c.insert(3, 31);
     c.insert(0, 0);
     c.insert(8, 1);
-    QCOMPARE(c.numSet(), 4u);
-    QCOMPARE(c.numSegments(), 3u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(4));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(3));
     QCOMPARE(c.at(0), 0);
     QCOMPARE(c.at(4), 31);
     QCOMPARE(c.at(5), 30);
@@ -114,34 +114,34 @@ void TestRowCache::erase()
 
     // erase entire segment
     c.erase(0);
-    QCOMPARE(c.numSet(), 3u);
-    QCOMPARE(c.numSegments(), 2u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(3));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(2));
     QCOMPARE(c.at(3), 31);
     QCOMPARE(c.at(4), 30);
     QCOMPARE(c.at(7), 1);
 
     // erase inside segment
     c.erase(4);
-    QCOMPARE(c.numSet(), 2u);
-    QCOMPARE(c.numSegments(), 2u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(2));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(2));
     QCOMPARE(c.at(3), 31);
     QCOMPARE(c.at(6), 1);
 
     // erase non-filled row
     c.erase(5);
-    QCOMPARE(c.numSet(), 2u);
-    QCOMPARE(c.numSegments(), 2u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(2));
+    QCOMPARE(c.numSegments(), (2));
     QCOMPARE(c.at(3), 31);
     QCOMPARE(c.at(5), 1);
 
     c.erase(5);
-    QCOMPARE(c.numSet(), 1u);
-    QCOMPARE(c.numSegments(), 1u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(1));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(1));
     QCOMPARE(c.at(3), 31);
 
     c.erase(3);
-    QCOMPARE(c.numSet(), 0u);
-    QCOMPARE(c.numSegments(), 0u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(0));
+    QCOMPARE(c.numSegments(), static_cast<size_t>(0));
 }
 
 void TestRowCache::smallestNonAvailableRange()
@@ -151,7 +151,7 @@ void TestRowCache::smallestNonAvailableRange()
     c.insert(3, 0);
     c.insert(0, 0);
     c.insert(8, 0);
-    QCOMPARE(c.numSet(), 4u);
+    QCOMPARE(c.numSet(), static_cast<size_t>(4));
     QVERIFY(c.count(0));
     QVERIFY(c.count(4));
     QVERIFY(c.count(5));
@@ -159,7 +159,7 @@ void TestRowCache::smallestNonAvailableRange()
 
     using P = std::pair<size_t,size_t>;
 
-    auto test = [&](int begin, int end) {
+    auto test = [&](size_t begin, size_t end) {
         P p{ begin, end };
         c.smallestNonAvailableRange(p.first, p.second);
         return p;
